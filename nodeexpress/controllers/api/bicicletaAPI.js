@@ -2,14 +2,17 @@ const Bicicleta = require('../../models/bicicleta')
 
 // Listar bicicletas
 exports.bicicletaList = function (req, res) {
-  res.status(200).json({
-    bicicletas: Bicicleta.allBicis
+  Bicicleta.find({}, function (err, bicicleta) {
+    if (err) console.log(err)
+    res.status(200).json({
+      bicicleta: bicicleta
+    })
   })
 }
 
 // Crear bicicleta
 exports.bicicletaCreate = function (req, res) {
-  const bicicleta = new Bicicleta(req.body.id, req.body.color, req.body.modelo, [req.body.lat, req.body.lng])
+  var bicicleta = new Bicicleta({ id: req.body.id, color: req.body.color, modelo: req.body.modelo, ubicacion: [req.body.lat, req.body.lng] })
   Bicicleta.add(bicicleta)
 
   res.status(200).json({

@@ -26,7 +26,7 @@ exports.bicicletaUpdateGet = function (req, res) {
 
 exports.bicicletaUpdatePost = function (req, res) {
   var bici = Bicicleta.findById(req.params.id)
-  bici.id = parseInt(req.body.id)
+  bici.id = parseInt(req.params.id)
   bici.color = req.body.color
   bici.modelo = req.body.modelo
   bici.ubicacion = [req.body.lat, req.body.lng]

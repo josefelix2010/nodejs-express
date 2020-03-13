@@ -1,44 +1,46 @@
-var Bicicleta = function (id, color, modelo, ubicacion) {
-  this.id = id
-  this.color = color
-  this.modelo = modelo
-  this.ubicacion = ubicacion
-}
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
-Bicicleta.prototype.toString = function () {
-  return 'id: ' + this.id + ' | color: ' + this.color
-}
-
-Bicicleta.allBicis = []
-Bicicleta.add = function (bici) {
-  Bicicleta.allBicis.push(bici)
-}
-
-Bicicleta.findById = function (biciId) {
-  var id = parseInt(biciId)
-  var bici = Bicicleta.allBicis.find(x => x.id === id)
-  if (bici) {
-    return bici
-  } else {
-    throw new Error(`No existe bicicleta con el id ${biciId}`)
-  }
-}
-
-Bicicleta.removeById = function (biciId) {
-  var id = parseInt(biciId)
-  Bicicleta.findById(id)
-  for (var i = 0; i < Bicicleta.allBicis.length; i++) {
-    if (Bicicleta.allBicis[i].id === id) {
-      Bicicleta.allBicis.splice(i, 1)
-      break
+const bicicletaSchema = new Schema({
+  codigo: { type: Number },
+  color: { type: String },
+  modelo: { type: String },
+  ubicacion: {
+    type: [Number],
+    index: {
+      type: '2dsphere',
+      sparse: true
     }
   }
+})
+
+bicicletaSchema.methods.toString = function () {
+  return 'codigo: ' + this.codigo + '| color: ' + this.color
 }
 
-var a = new Bicicleta(1, 'Roja', 'Urbana', [10.214, -67.971])
-var b = new Bicicleta(2, 'Azul', 'Infantil', [10.260, -68.014])
+bicicletaSchema.statics.allBicis = function (callback) {
+  return this.find({}, callback)
+}
 
-Bicicleta.add(a)
-Bicicleta.add(b)
+bicicletaSchema.statics.crearInstancia = function (codigo, color, modelo, ubicacion) {
+  return new this({
+    codigo: codigo,
+    color: color,
+    modelo: modelo,
+    ubicacion: ubicacion
+  })
+}
 
-module.exports = Bicicleta
+bicicletaSchema.statics.add = function (bici, cb) {
+  this.create(bici, cb)
+}
+
+bicicletaSchema.statics.findByCode = function (codigo, cb) {
+  return this.findOne({ codigo: codigo }, cb)
+}
+
+bicicletaSchema.statics.removeByCode = function (codigo, cb) {
+  return this.deleteOne({ codigo: codigo }, cb)
+}
+
+module.exports = mongoose.model('Bicicleta', bicicletaSchema)
