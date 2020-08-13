@@ -1,7 +1,42 @@
-a {
-  color: #00B7FF;
+body {
+	padding: 10px 20px;
 }
 
 #main-map {
-  height: 600px;
+	height: 600px;
+}
+
+table {
+	margin: 5px 5px;
+	text-align: left;
+}
+
+thead {
+	background-color: rgba(211, 211, 211, 0.50);
+}
+
+.table-button {
+	font-size: 10px;
+	padding: 5px 5px;
+	font-family: 'Varela Round';
+}
+
+.button {
+	margin: 20px 20px;
+	padding: 5px 5px;
+	font-size: 10px;
+	font-family: 'Varela Round';
+}
+
+.form-group {
+	margin: 20px 20px;
+}
+
+.volver:hover {
+	background-color: #f00808;
+	color: #ffffff;
+}
+
+.editar:hover {
+	background-color: #fff280;
 }

@@ -3,18 +3,9 @@ extends ../layout
 block content
     a(href='/bicicletas') Volver
     
-    br
-    br
     h2 Modificar Bicicleta
-    br
-    br
     
     form(action=`/bicicletas/${bici.id}/update` method='post')
-        label(for='id') ID:
-        input#id(type='text' name='id' value=bici.id readonly)
-        
-        br
-        
         label(for='color') Color:
         input#color(type='text' name='color' value=bici.color)
             

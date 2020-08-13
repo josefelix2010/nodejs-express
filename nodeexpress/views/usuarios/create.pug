@@ -1,15 +1,9 @@
 extends ../layout
 
 block content
-	a(href='/usuarios') Volver
-
-	br
-	br
-	br
 
 	h2 Nuevo Usuario
 
-	br
 	br
 
 	form(action='/usuarios/create' method='post')
@@ -41,4 +35,6 @@ block content
 				small#confirmPasswordHelp.text-danger 
 					= errors.confirmPassword.message
 				
-		input.btn.btn-primary(type='submit' value='OK')
+		a(href='/usuarios').btn.button.volver Volver
+
+		input.btn.btn-success(type='submit' value='Crear').button

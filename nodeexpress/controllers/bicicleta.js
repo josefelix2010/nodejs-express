@@ -1,42 +1,59 @@
 var Bicicleta = require('../models/bicicleta')
 
-// Mostrar la lista de bicicletas
+//Mostrar la lista de bicicletas
 exports.bicicletaList = function (req, res) {
-    res.render('bicicletas/index', { bicis: Bicicleta.allBicis })
+	Bicicleta.find({}, (err, Bicicleta) => {
+		res.render('bicicletas/index', { bicis: Bicicleta })
+	})
+}
+
+//Obtener bicicleta a actualizar
+exports.bicicletaUpdateGet = function (req, res) {
+	Bicicleta.findById(req.params.id, function (err, bici) {
+		res.render('bicicletas/update', { errors: {}, bici: bici})
+	})
+}
+
+//Subir actualización de bicicleta
+exports.bicicletaUpdatePost = function (req, res) {
+	var updateValues = { color: req.body.color, modelo: req.body.modelo, ubicacion: [req.body.lat, req.body.lng] }
+	Bicicleta.findByIdAndUpdate(req.params.id, updateValues, function (err, bici) {
+		if (err) {
+			console.log(err);
+			res.render('bicicletas/update', {errors: err.errors, bici: new Bicicleta({ 
+				color: req.body.color,
+				modelo: req.body.modelo,
+				ubicacion: [req.body.lat, req.body.lng]
+			})});
+		} else {
+			res.redirect('/bicicletas');
+		}
+	})
 }
 
 // Crea una bicicleta nueva
 exports.bicicletaCreateGet = function (req, res) {
-    res.render('bicicletas/create')
+	res.render('bicicletas/create', { errors: {}, bici: new Bicicleta() })
 }
 
+//Subir la nueva bicicleta que se creó
 exports.bicicletaCreatePost = function (req, res) {
-    var bici = new Bicicleta(req.body.id, req.body.color, req.body.modelo, [req.body.lat, req.body.lng])
-    Bicicleta.add(bici)
-
-    res.redirect('/bicicletas')
-}
-
-// Actualizar bicicleta
-exports.bicicletaUpdateGet = function (req, res) {
-    var bici = Bicicleta.findById(req.params.id)
-
-    res.render('bicicletas/update', { bici })
-}
-
-exports.bicicletaUpdatePost = function (req, res) {
-    var bici = Bicicleta.findById(req.params.id)
-    bici.id = parseInt(req.params.id)
-    bici.color = req.body.color
-    bici.modelo = req.body.modelo
-    bici.ubicacion = [req.body.lat, req.body.lng]
-
-    res.redirect('/bicicletas')
+	Bicicleta.create({ color: req.body.color, modelo: req.body.modelo, ubicacion: [req.body.lat, req.body.lng] }, function (err, nuevaBici) {
+		if (err) {
+			res.render('bicicletas/create', {errors: err.errors, bici: new Bicicleta({ color: req.body.color, modelo: req.body.modelo, ubicacion: [req.body.lat, req.body.lng] })})
+		} else {
+			res.redirect('/bicicletas');
+		}
+	})
 }
 
 // Eliminar bicicleta
 exports.bicicletaDeletePost = function (req, res) {
-    Bicicleta.removeById(req.body.id)
-
-    res.redirect('/bicicletas')
+	Bicicleta.findByIdAndDelete(req.body.id, function (err) {
+		if (err) {
+			next(err);
+		} else {
+			res.redirect('/usuarios');
+		}
+	})
 }

@@ -1,39 +1,38 @@
 extends ../layout
 
 block content
-    a(href='/bicicletas') Volver
-    
-    br
-    br
-    h2 Nueva Bicicleta
-    br
-    br
-    
-    form(action='/bicicletas/create' method='post')
-        label(for='id') ID:
-        input#id(type='text' name='id')
-        
-        br
-        
-        label(for='color') Color:
-        input#color(type='text' name='color')
-        
-        br
-        
-        label(for='modelo') Modelo:
-        input#modelo(type='text' name='modelo')
-        
-        br
-        
-        label(for='lat') Latitud:
-        input#modelo(type='text' name='lat')
-        
-        br
-        
-        label(for='lng') Longitud:
-        input#modelo(type='text' name='lng')
-        
-        br
-        br
-        
-        input.btn(type='submit' value="Agregar")
+		
+	h2 Nueva Bicicleta
+	
+	form(action='/bicicletas/create' method='post')
+
+		.form-group
+			label(for='color') Color
+			input#color.form-control(type='text' name='color' value=bici.color class=errors.color ? 'is-invalid' : '')
+			if errors.color
+				small#colorHelp.text-danger 
+					= errors.color.message
+		
+		.form-group
+			label(for='modelo') Modelo
+			input#modelo.form-control(type='text' name='modelo' value=bici.modelo class=errors.modelo ? 'is-invalid' : '')
+			if errors.modelo
+				small#modeloHelp.text-danger 
+					= errors.modelo.message
+		
+		.form-group
+			label(for='lat') Latitud
+			input#lat.form-control(type='text' name='lat' value=bici.lat class=errors.lat ? 'is-invalid' : '')
+			if errors.lat
+				small#latHelp.text-danger 
+					= errors.lat.message
+
+		.form-group
+			label(for='lng') Longitud
+			input#lng.form-control(type='text' name='lng' value=bici.lng class=errors.lng ? 'is-invalid' : '')
+			if errors.lng
+				small#lngHelp.text-danger 
+					= errors.lng.message
+		
+		a(href='/bicicletas').btn.button.volver Volver
+		input.btn.btn-success(type='submit' value="Agregar").button

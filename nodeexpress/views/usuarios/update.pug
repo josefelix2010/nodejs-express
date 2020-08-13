@@ -1,15 +1,9 @@
 extends ../layout
 
 block content
-	a(href='/usuarios') Volver
-
-	br
-	br
-	br
 
 	h2 Actualizar Usuario
 
-	br
 	br
 
 	form(action=`/usuarios/${usuario.id}/update` method='post')
@@ -20,4 +14,5 @@ block content
 				small#nombreHelp.text-danger 
 					= errors.nombre.message
 		
-		input.btn.btn-primary(type='submit' value='Actualizar')
+		a(href='/usuarios').btn.button.volver Volver
+		input.btn.btn-success(type='submit' value='Actualizar').button
